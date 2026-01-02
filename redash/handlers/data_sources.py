@@ -65,6 +65,8 @@ class DataSourceResource(BaseResource):
 
         data_source.type = req["type"]
         data_source.name = req["name"]
+        if "ontology" in req:
+            data_source.ontology = req["ontology"]
         models.db.session.add(data_source)
 
         try:

@@ -3,6 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Modal from "antd/lib/modal";
+import Input from "antd/lib/input";
+import Collapse from "antd/lib/collapse";
+import Tooltip from "@/components/Tooltip";
 import routeWithUserSession from "@/components/ApplicationArea/routeWithUserSession";
 import navigateTo from "@/components/ApplicationArea/navigateTo";
 import LoadingState from "@/components/items-list/components/LoadingState";
@@ -14,6 +17,9 @@ import wrapSettingsTab from "@/components/SettingsWrapper";
 import DataSource, { IMG_ROOT } from "@/services/data-source";
 import notification from "@/services/notification";
 import routes from "@/services/routes";
+
+const { TextArea } = Input;
+const { Panel } = Collapse;
 
 class EditDataSource extends React.Component {
   static propTypes = {
@@ -44,12 +50,23 @@ class EditDataSource extends React.Component {
   saveDataSource = (values, successCallback, errorCallback) => {
     const { dataSource } = this.state;
     helper.updateTargetWithValues(dataSource, values);
+    // ontology is already in dataSource from handleOntologyChange
     DataSource.save(dataSource)
       .then(() => successCallback("Saved."))
       .catch(error => {
         const message = get(error, "response.data.message", "Failed saving.");
         errorCallback(message);
       });
+  };
+
+  handleOntologyChange = e => {
+    const { dataSource } = this.state;
+    this.setState({
+      dataSource: {
+        ...dataSource,
+        ontology: e.target.value,
+      },
+    });
   };
 
   deleteDataSource = callback => {
@@ -131,6 +148,55 @@ class EditDataSource extends React.Component {
         </div>
         <div className="col-md-4 col-md-offset-4 m-b-10">
           <DynamicForm {...formProps} />
+
+          <Collapse className="m-t-20" bordered={false}>
+            <Panel
+              header={
+                <span>
+                  <i className="fa fa-magic m-r-5" aria-hidden="true" />
+                  AI Query Generation Settings
+                  <Tooltip title="Provide additional context about your data to help AI generate better queries">
+                    <i className="fa fa-question-circle m-l-5" style={{ color: "#999" }} aria-hidden="true" />
+                  </Tooltip>
+                </span>
+              }
+              key="ontology">
+              <div className="form-group">
+                <label htmlFor="ontology">
+                  Ontology / Metadata
+                  <Tooltip title="Describe your data model, table relationships, business rules, and any context that helps understand the data">
+                    <i className="fa fa-question-circle m-l-5" style={{ color: "#999" }} aria-hidden="true" />
+                  </Tooltip>
+                </label>
+                <TextArea
+                  id="ontology"
+                  placeholder={`Describe your data model here. For example:
+
+- users table: Contains customer information
+  - user_id: Primary key
+  - email: Unique customer email
+  - created_at: Registration date
+
+- orders table: Customer orders
+  - order_id: Primary key
+  - user_id: Foreign key to users
+  - total_amount: Order total in USD
+  - status: pending, completed, cancelled
+
+Business rules:
+- Active users: users with at least one order in the last 30 days
+- VIP customers: users with total orders > $1000`}
+                  value={dataSource.ontology || ""}
+                  onChange={this.handleOntologyChange}
+                  rows={12}
+                  style={{ fontFamily: "monospace", fontSize: "12px" }}
+                />
+                <small className="form-text text-muted">
+                  This information will be used by AI to generate more accurate SQL queries.
+                </small>
+              </div>
+            </Panel>
+          </Collapse>
         </div>
       </div>
     );

@@ -13,6 +13,7 @@ import { getHorizontalFormProps, getHorizontalFormItemWithoutLabelProps } from "
 import useOrganizationSettings from "./hooks/useOrganizationSettings";
 import GeneralSettings from "./components/GeneralSettings";
 import AuthSettings from "./components/AuthSettings";
+import AISettings from "./components/AISettings";
 
 function OrganizationSettings({ onError }) {
   const { settings, currentValues, isLoading, isSaving, handleSubmit, handleChange } = useOrganizationSettings(onError);
@@ -22,6 +23,7 @@ function OrganizationSettings({ onError }) {
         <Form {...getHorizontalFormProps()} onFinish={handleSubmit}>
           <GeneralSettings loading={isLoading} settings={settings} values={currentValues} onChange={handleChange} />
           <AuthSettings loading={isLoading} settings={settings} values={currentValues} onChange={handleChange} />
+          <AISettings loading={isLoading} settings={settings} values={currentValues} onChange={handleChange} />
           <Form.Item {...getHorizontalFormItemWithoutLabelProps()}>
             {isLoading ? (
               <Skeleton.Button active />

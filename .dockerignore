@@ -1,6 +1,7 @@
 client/.tmp/
 node_modules/
 viz-lib/node_modules/
+.yarn/
 .tmp/
 .venv/
 venv/

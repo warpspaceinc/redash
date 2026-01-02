@@ -45,6 +45,10 @@ SEND_EMAIL_ON_FAILED_SCHEDULED_QUERIES = parse_boolean(
 HIDE_PLOTLY_MODE_BAR = parse_boolean(os.environ.get("HIDE_PLOTLY_MODE_BAR", "false"))
 DISABLE_PUBLIC_URLS = parse_boolean(os.environ.get("REDASH_DISABLE_PUBLIC_URLS", "false"))
 
+# AI Query Generation Settings
+AI_QUERY_GENERATION_ENABLED = parse_boolean(os.environ.get("REDASH_AI_QUERY_GENERATION_ENABLED", "false"))
+AI_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+
 settings = {
     "beacon_consent": None,
     "auth_password_login_enabled": PASSWORD_LOGIN_ENABLED,
@@ -73,4 +77,7 @@ settings = {
     "send_email_on_failed_scheduled_queries": SEND_EMAIL_ON_FAILED_SCHEDULED_QUERIES,
     "hide_plotly_mode_bar": HIDE_PLOTLY_MODE_BAR,
     "disable_public_urls": DISABLE_PUBLIC_URLS,
+    # AI Settings
+    "ai_query_generation_enabled": AI_QUERY_GENERATION_ENABLED,
+    "ai_api_key": AI_API_KEY,
 }

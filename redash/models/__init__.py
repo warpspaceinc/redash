@@ -125,6 +125,7 @@ class DataSource(BelongsToOrgMixin, db.Model):
     queue_name = Column(db.String(255), default="queries")
     scheduled_queue_name = Column(db.String(255), default="scheduled_queries")
     created_at = Column(db.DateTime(True), default=db.func.now())
+    ontology = Column(db.Text, nullable=True)
 
     data_source_groups = db.relationship("DataSourceGroup", back_populates="data_source", cascade="all")
     __tablename__ = "data_sources"
@@ -157,6 +158,7 @@ class DataSource(BelongsToOrgMixin, db.Model):
             d["queue_name"] = self.queue_name
             d["scheduled_queue_name"] = self.scheduled_queue_name
             d["groups"] = self.groups
+            d["ontology"] = self.ontology
 
         if with_permissions_for is not None:
             d["view_only"] = (

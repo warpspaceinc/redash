@@ -1,0 +1,122 @@
+.ai-query-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  .fa-magic {
+    color: #722ed1;
+  }
+
+  .ai-button-text {
+    font-weight: 500;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: #722ed1;
+    color: #722ed1;
+
+    .fa-magic {
+      color: #722ed1;
+    }
+  }
+}
+
+.ai-query-generator-content {
+  .ai-input-section {
+    margin-bottom: 16px;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    textarea {
+      font-size: 14px;
+    }
+
+    .ai-hint {
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.45);
+
+      kbd {
+        display: inline-block;
+        padding: 2px 6px;
+        font-size: 11px;
+        font-family: monospace;
+        background-color: #fafafa;
+        border: 1px solid #d9d9d9;
+        border-radius: 3px;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  .ai-action-section {
+    margin-bottom: 16px;
+  }
+
+  .ai-error-alert {
+    margin-bottom: 16px;
+  }
+
+  .ai-loading-section {
+    text-align: center;
+    padding: 32px;
+
+    p {
+      margin-top: 16px;
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+
+  .ai-result-section {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .ai-result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background-color: #fafafa;
+      border-bottom: 1px solid #d9d9d9;
+
+      .ai-result-title {
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.85);
+      }
+
+      .ai-token-usage {
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.45);
+      }
+    }
+
+    .ai-result-query {
+      margin: 0;
+      padding: 16px;
+      background-color: #282c34;
+      color: #abb2bf;
+      font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .ai-result-actions {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background-color: #fafafa;
+      border-top: 1px solid #d9d9d9;
+    }
+  }
+}

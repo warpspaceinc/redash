@@ -157,6 +157,16 @@ function QuerySource(props) {
     }
   }, []);
 
+  const handleAIQueryInsert = useCallback(
+    queryText => {
+      setQuery(extend(query.clone(), { query: queryText }));
+      if (editorRef.current) {
+        editorRef.current.focus();
+      }
+    },
+    [query, setQuery]
+  );
+
   const [selectedText, setSelectedText] = useState(null);
 
   const doExecuteQuery = useCallback(
@@ -269,6 +279,11 @@ function QuerySource(props) {
                     />
 
                     <QueryEditor.Controls
+                      aiQueryGeneratorProps={{
+                        dataSourceId: dataSource ? dataSource.id : null,
+                        onInsertQuery: handleAIQueryInsert,
+                        disabled: !dataSource,
+                      }}
                       addParameterButtonProps={{
                         title: "Add New Parameter",
                         shortcut: "mod+p",

@@ -2,6 +2,12 @@ from flask import make_response
 from flask_restful import Api
 from werkzeug.wrappers import Response
 
+from redash.handlers.ai_query import (
+    AIApiKeyTestResource,
+    AIQueryGenerateResource,
+    AIQueryStatusResource,
+)
+from redash.handlers.ai_assistant import AIAssistantChatResource, AIAssistantExecuteQueryResource
 from redash.handlers.alerts import (
     AlertEvaluateResource,
     AlertListResource,
@@ -285,3 +291,9 @@ api.add_org_resource(QuerySnippetResource, "/api/query_snippets/<snippet_id>", e
 api.add_org_resource(QuerySnippetListResource, "/api/query_snippets", endpoint="query_snippets")
 
 api.add_org_resource(OrganizationSettings, "/api/settings/organization", endpoint="organization_settings")
+
+api.add_org_resource(AIQueryGenerateResource, "/api/ai/generate-query", endpoint="ai_generate_query")
+api.add_org_resource(AIQueryStatusResource, "/api/ai/status", endpoint="ai_status")
+api.add_org_resource(AIApiKeyTestResource, "/api/ai/test-api-key", endpoint="ai_test_api_key")
+api.add_org_resource(AIAssistantChatResource, "/api/ai/chat", endpoint="ai_chat")
+api.add_org_resource(AIAssistantExecuteQueryResource, "/api/ai/execute-query", endpoint="ai_execute_query")

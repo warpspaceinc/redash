@@ -9,6 +9,7 @@ import KeyboardShortcuts, { humanReadableShortcut } from "@/services/KeyboardSho
 import AutocompleteToggle from "./AutocompleteToggle";
 import "./QueryEditorControls.less";
 import AutoLimitCheckbox from "@/components/queries/QueryEditor/AutoLimitCheckbox";
+import AIAssistantModal from "@/components/queries/AIAssistant";
 
 export function ButtonTooltip({ title, shortcut, ...props }) {
   shortcut = humanReadableShortcut(shortcut, 1); // show only primary shortcut
@@ -34,6 +35,7 @@ ButtonTooltip.defaultProps = {
 };
 
 export default function EditorControl({
+  aiQueryGeneratorProps,
   addParameterButtonProps,
   formatButtonProps,
   saveButtonProps,
@@ -58,6 +60,13 @@ export default function EditorControl({
 
   return (
     <div className="query-editor-controls">
+      {aiQueryGeneratorProps !== false && (
+        <AIAssistantModal
+          dataSourceId={aiQueryGeneratorProps.dataSourceId}
+          onInsertQuery={aiQueryGeneratorProps.onInsertQuery}
+          disabled={aiQueryGeneratorProps.disabled}
+        />
+      )}
       {addParameterButtonProps !== false && (
         <ButtonTooltip title={addParameterButtonProps.title} shortcut={addParameterButtonProps.shortcut}>
           <Button
@@ -144,6 +153,14 @@ const ButtonPropsPropType = PropTypes.oneOfType([
 ]);
 
 EditorControl.propTypes = {
+  aiQueryGeneratorProps: PropTypes.oneOfType([
+    PropTypes.bool, // `false` to hide
+    PropTypes.shape({
+      dataSourceId: PropTypes.number,
+      onInsertQuery: PropTypes.func,
+      disabled: PropTypes.bool,
+    }),
+  ]),
   addParameterButtonProps: ButtonPropsPropType,
   formatButtonProps: ButtonPropsPropType,
   saveButtonProps: ButtonPropsPropType,
@@ -177,6 +194,7 @@ EditorControl.propTypes = {
 };
 
 EditorControl.defaultProps = {
+  aiQueryGeneratorProps: false,
   addParameterButtonProps: false,
   formatButtonProps: false,
   saveButtonProps: false,

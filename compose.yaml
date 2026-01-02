@@ -10,7 +10,7 @@ x-redash-service: &redash-service
   env_file:
     - .env
 x-redash-environment: &redash-environment
-  REDASH_HOST: http://localhost:5001
+  REDASH_HOST: http://localhost:5050
   REDASH_LOG_LEVEL: "INFO"
   REDASH_REDIS_URL: "redis://redis:6379/0"
   REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
@@ -24,12 +24,12 @@ x-redash-environment: &redash-environment
 services:
   server:
     <<: *redash-service
-    command: dev_server
+    command: server
     depends_on:
       - postgres
       - redis
     ports:
-      - "5001:5000"
+      - "5050:5000"
       - "5678:5678"
     environment:
       <<: *redash-environment

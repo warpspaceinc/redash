@@ -28,3 +28,9 @@ npm-debug.log
 
 client/cypress/screenshots
 client/cypress/videos
+
+# Claude Code local settings
+.claude/
+
+# Development docs (research notes)
+docs/

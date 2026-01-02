@@ -6,7 +6,14 @@ from redash.permissions import require_admin
 from redash.settings.organization import settings as org_settings
 
 
-def get_settings_with_defaults(defaults, org):
+def mask_api_key(key):
+    """Mask API key for display, showing only first 8 and last 4 characters."""
+    if not key or len(key) < 16:
+        return "*" * len(key) if key else ""
+    return key[:8] + "*" * (len(key) - 12) + key[-4:]
+
+
+def get_settings_with_defaults(defaults, org, mask_secrets=True):
     values = org.settings.get("settings", {})
     settings = {}
 
@@ -19,6 +26,11 @@ def get_settings_with_defaults(defaults, org):
             settings[setting] = default_value
         else:
             settings[setting] = current_value
+
+    # Mask sensitive fields
+    if mask_secrets and "ai_api_key" in settings and settings["ai_api_key"]:
+        settings["ai_api_key_masked"] = mask_api_key(settings["ai_api_key"])
+        settings["ai_api_key"] = ""  # Don't send actual key to frontend
 
     settings["auth_google_apps_domains"] = org.google_apps_domains
 
@@ -44,6 +56,12 @@ class OrganizationSettings(BaseResource):
             if k == "auth_google_apps_domains":
                 previous_values[k] = self.current_org.google_apps_domains
                 self.current_org.settings[Organization.SETTING_GOOGLE_APPS_DOMAINS] = v
+            elif k == "ai_api_key":
+                # Only update API key if a new value is provided (not empty)
+                if v and v.strip():
+                    previous_values[k] = "[MASKED]"
+                    self.current_org.set_setting(k, v)
+                # If empty, keep existing value
             else:
                 previous_values[k] = self.current_org.get_setting(k, raise_on_missing=False)
                 self.current_org.set_setting(k, v)

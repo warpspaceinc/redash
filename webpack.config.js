@@ -258,7 +258,9 @@ const config = {
     chunkModules: false
   },
   watchOptions: {
-    ignored: /\.sw.$/
+    ignored: /\.sw.$/,
+    poll: 1000,
+    aggregateTimeout: 300
   },
   devServer: {
     devMiddleware: {
